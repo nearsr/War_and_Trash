@@ -1,0 +1,3 @@
+src >> Pile.java >> public void shuffle(RandomInput rand)
+
+The algorithm for Fisher Yates random shuffling is located in the above directory.
