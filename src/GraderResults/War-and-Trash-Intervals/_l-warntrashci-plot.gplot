@@ -1,0 +1,24 @@
+set title "90% CIs of Pr(Last Exchange in last 20% of Game)"
+set xlabel "Experiment"
+set ylabel "Pr"
+set key inside right top
+set auto fix
+set xzeroaxis
+set yzeroaxis
+set offsets graph 0.1, graph 0.1, graph 0.2, graph 0.1
+#set style linewidth 2
+
+# values derived from gold data and replaced with sed by build process
+trashlo=0.31025
+trashhi=0.31954
+warlo=0.16417
+warhi=0.17165
+
+# gold data
+plot "_trashl-warntrashci-0-0.dat"    with lines   lt rgbcolor "blue" title "Trash",\
+     trashlo            with lines     lt rgbcolor "black" title "Trash w=0.01s",\
+     trashhi            with lines     lt rgbcolor "black" notitle,\
+     "_warl-warntrashci-0-0.dat"    with lines     lt rgbcolor "red" title "War",\
+     warlo              with lines     lt rgbcolor "purple" title "War w=0.01s",\
+     warhi              with lines     lt rgbcolor "purple" notitle
+

@@ -1,0 +1,17 @@
+set title "War 90% CIs of Pr(Turns > 700)"
+set xlabel "Experiment"
+set ylabel "Pr"
+#set key inside right bottom
+set nokey
+set auto fix
+set xzeroaxis
+set yzeroaxis
+set offsets graph 0.1, graph 0.1, graph 0.1, graph 0.1
+#set style linewidth 2
+
+lo=0.21011
+hi=0.21832
+plot "_warn-warntrashci-0-0.dat"    with lines   lt rgbcolor "red", \
+     lo           with lines   lt rgbcolor "black", \
+     hi           with lines   lt rgbcolor "black" 
+
