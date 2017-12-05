@@ -1,0 +1,14 @@
+cd into this folder, GraderResults
+Make sure you are on a linux machine / putty into bb136-## on the vpn from home
+This only works when connected to mines campus
+
+Run the config as it says on website:
+source ~khellman/SIMGRADING/setup.sh ~khellman/SIMGRADING
+
+MUST be in directory with SIM in it. Run:
+GraderResults/War-and-Trash/grader.sh
+
+
+Git is configured to ignore all the extra stuff that this script will generate.
+If you commit and then push to git now, then it will push the PDFs of the plots to your home machine.
+This is the easiest way to see the generated plots if you are running putty.
