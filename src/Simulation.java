@@ -33,6 +33,7 @@ public class Simulation {
 
 	private double[] result;
 	boolean verbose = false;
+	boolean allowOutput = true;
 
 
 	/*
@@ -205,7 +206,7 @@ public class Simulation {
 				if (verbose) System.out.println();
 				if (verbose) System.out.println("Turn of last winner transition: " + turnOfLastWinnerTransition);
 				if (verbose) System.out.println();
-				if (verbose) System.out.println("OUTPUT war turns " + turnNumber + " transitions " + 
+				if (allowOutput) System.out.println("OUTPUT war turns " + turnNumber + " transitions " + 
 						numWinnerTransitions + " last " + fractionLastWinnerTransition);
 				result = new double[]{turnNumber, numWinnerTransitions, fractionLastWinnerTransition};
 
@@ -525,7 +526,7 @@ public class Simulation {
 		if (verbose) System.out.println();
 		if (verbose) System.out.println("Turn of last winner transition: " + turnOfLastWinnerTransition);
 		if (verbose) System.out.println();
-		if (verbose) System.out.println("OUTPUT trash turns " + turnNumber + " transitions " + 
+		if (allowOutput) System.out.println("OUTPUT trash turns " + turnNumber + " transitions " + 
 				numWinnerTransitions + " last " + fractionLastWinnerTransition);
 		result = new double[]{turnNumber, numWinnerTransitions, fractionLastWinnerTransition};
 
