@@ -27,6 +27,7 @@ public class SIM {
 		//System.out.println(Arrays.toString(results));
 		
 		runTrials();
+		sim.endReadingFile();
 	}
 
 	public enum Game {
