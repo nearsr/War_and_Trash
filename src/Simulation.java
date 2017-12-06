@@ -3,9 +3,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class SIM {
+public class Simulation {
 
-	static SIM simulation;
+	static Simulation simulation;
 
 	Pile deck;
 	RandomInput rand;
@@ -33,7 +33,7 @@ public class SIM {
 
 
 	public static void main(String[] args) {
-		simulation = new SIM();
+		simulation = new Simulation();
 
 		if( args.length == 2 ) {
 			simulation.getUserInput(args);
@@ -46,7 +46,7 @@ public class SIM {
 
 	}
 
-	public SIM() {
+	public Simulation() {
 
 	}
 
