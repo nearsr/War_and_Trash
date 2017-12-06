@@ -31,7 +31,11 @@ public class Simulation {
 
 	private boolean gameOver = false;
 
+	private double[] result;
+	boolean verbose = false;
 
+
+	/*
 	public static void main(String[] args) {
 		simulation = new Simulation();
 
@@ -45,12 +49,52 @@ public class Simulation {
 		}
 
 	}
+	*/
 
 	public Simulation() {
 
 	}
+	
+	//for new assignment
+	public void beginReadingFile(String filename) {
+		this.filename = filename;
+		rand = new RandomInput(filename);
+		rand.beginReadingNumbers();
+	}
+	
+	public void endReadingFile() {
+		rand.endReadingNumbers();
+	}
+	
+	//for new assignment
+	//standalone start function
+	public double[] generate(boolean isWar) {
+		//Set globals from args passed in
+		this.isWar = isWar;
+		
+		//Reset globals
+		turnNumber = 0;
+		currentOverallWinner = null;
+		numWinnerTransitions = 0;
+		turnOfLastWinnerTransition = 0;
+		fractionLastWinnerTransition = 0;
+		gameOver = false;
+				
+		deck = new Pile();
+		deck.generateFullDeck();
+		deck.shuffle(rand);
 
-	public void initialize() {
+		if(isWar) {
+			playWar();
+		}
+		else {
+			playTrash();
+		}
+		
+		return result;
+	}
+
+	private void initialize() {
 		//not officially a seed,
 		//but serves the same function
 		//of giving a different set of
@@ -89,7 +133,7 @@ public class Simulation {
 		rand.endReadingNumbers();
 	}
 
-	private void getUserInput(String[] args) {
+	public void getUserInput(String[] args) {
 		if (debug) {
 			filename = "bin\\sim-traces-0-1\\uniform-0-1-00.dat";
 
@@ -131,7 +175,7 @@ public class Simulation {
 
 	public void setCurrentWinner(Player winner) {	
 		this.currentOverallWinner = winner;
-		System.out.println(winner.getPlayerName() + " is now winning.");
+		if (verbose) System.out.println(winner.getPlayerName() + " is now winning.");
 
 	}
 
@@ -153,16 +197,17 @@ public class Simulation {
 			if (checkIfGameOver(bob, jon) == true) {
 				stillPlaying = false;
 				checkIfWinnerChanged(bob, jon);
-				System.out.println(currentOverallWinner.getPlayerName() + " won the game!");
+				if (verbose) System.out.println(currentOverallWinner.getPlayerName() + " won the game!");
 
 				this.fractionLastWinnerTransition = ((double)turnOfLastWinnerTransition) / turnNumber;
 
 
-				System.out.println();
-				System.out.println("Turn of last winner transition: " + turnOfLastWinnerTransition);
-				System.out.println();
-				System.out.println("OUTPUT war turns " + turnNumber + " transitions " + 
+				if (verbose) System.out.println();
+				if (verbose) System.out.println("Turn of last winner transition: " + turnOfLastWinnerTransition);
+				if (verbose) System.out.println();
+				if (verbose) System.out.println("OUTPUT war turns " + turnNumber + " transitions " + 
 						numWinnerTransitions + " last " + fractionLastWinnerTransition);
+				result = new double[]{turnNumber, numWinnerTransitions, fractionLastWinnerTransition};
 
 				break;
 			}
@@ -170,8 +215,8 @@ public class Simulation {
 			turnNumber++;
 
 			//print
-			System.out.println();
-			System.out.println("Turn " + turnNumber);
+			if (verbose) System.out.println();
+			if (verbose) System.out.println("Turn " + turnNumber);
 
 			//both players remove top card
 			Card bobsPlay = bob.getHand().removeTopCard();
@@ -182,10 +227,10 @@ public class Simulation {
 			jon.getSoldiers().giveCard(jonsPlay);
 
 			//print
-			System.out.println("Bob's play ");
-			System.out.println(bobsPlay);
-			System.out.println("Jon's play ");
-			System.out.println(jonsPlay);
+			if (verbose) System.out.println("Bob's play ");
+			if (verbose) System.out.println(bobsPlay);
+			if (verbose) System.out.println("Jon's play ");
+			if (verbose) System.out.println(jonsPlay);
 
 			WarPlayer roundWinner = determineRoundWinner(bob, bobsPlay, jon, jonsPlay);
 
@@ -197,10 +242,10 @@ public class Simulation {
 				roundWinner.getWinnings().grabCardsFrom(winnerTakeAll);
 
 				//print
-				System.out.println(roundWinner.getPlayerName() + " takes the pot!");
+				if (verbose) System.out.println(roundWinner.getPlayerName() + " takes the pot!");
 				winnerTakeAll.printCards();
 
-				System.out.println("Bob " + bob.getNumCards() + " : Jon " + jon.getNumCards());
+				if (verbose) System.out.println("Bob " + bob.getNumCards() + " : Jon " + jon.getNumCards());
 
 				checkIfWinnerChanged(bob, jon);
 			}
@@ -243,12 +288,12 @@ public class Simulation {
 		if (bob.getHand().getCards().size() == 0 && bob.getWinnings().getCards().size() != 0) {
 			bob.getHand().grabCardsFrom(bob.getWinnings());
 			bob.getHand().shuffle(rand);
-			System.out.println("Bob's hand is empty - he shuffles his winnings and puts them in hand.");
+			if (verbose) System.out.println("Bob's hand is empty - he shuffles his winnings and puts them in hand.");
 		}
 		if (jon.getHand().getCards().size() == 0 && jon.getWinnings().getCards().size() != 0) {
 			jon.getHand().grabCardsFrom(jon.getWinnings());
 			jon.getHand().shuffle(rand);
-			System.out.println("Jon's hand is empty - he shuffles his winnings and puts them in hand.");
+			if (verbose) System.out.println("Jon's hand is empty - he shuffles his winnings and puts them in hand.");
 		}
 	}
 
@@ -392,7 +437,7 @@ public class Simulation {
 		}
 
 		board += ">";
-		System.out.println(board);
+		if (verbose) System.out.println(board);
 	}
 
 	public void arrayStatusCheck(TrashPlayer p, Pile draw, Pile discard) {
@@ -400,8 +445,8 @@ public class Simulation {
 		if (isArrayComplete(p, draw, discard)) {
 			clearArray(p, draw, discard);
 			if(gameOver) return;
-			System.out.println("Clear!");
-			System.out.println("New array");
+			if (verbose) System.out.println("Clear!");
+			if (verbose) System.out.println("New array");
 			printTurnProgress(p, draw, discard, null);
 		}
 	}
@@ -472,16 +517,17 @@ public class Simulation {
 	public void endGame(TrashPlayer winner) {
 
 		stillPlaying = false;
-		System.out.println(currentOverallWinner.getPlayerName() + " won the game!");
+		if (verbose) System.out.println(currentOverallWinner.getPlayerName() + " won the game!");
 
 		this.fractionLastWinnerTransition = ((double)turnOfLastWinnerTransition) / turnNumber;
 
 
-		System.out.println();
-		System.out.println("Turn of last winner transition: " + turnOfLastWinnerTransition);
-		System.out.println();
-		System.out.println("OUTPUT trash turns " + turnNumber + " transitions " + 
+		if (verbose) System.out.println();
+		if (verbose) System.out.println("Turn of last winner transition: " + turnOfLastWinnerTransition);
+		if (verbose) System.out.println();
+		if (verbose) System.out.println("OUTPUT trash turns " + turnNumber + " transitions " + 
 				numWinnerTransitions + " last " + fractionLastWinnerTransition);
+		result = new double[]{turnNumber, numWinnerTransitions, fractionLastWinnerTransition};
 
 		gameOver  = true;
 
@@ -505,10 +551,10 @@ public class Simulation {
 		turnNumber++;
 
 		//print
-		System.out.println();
-		System.out.println("Turn " + turnNumber);
+		if (verbose) System.out.println();
+		if (verbose) System.out.println("Turn " + turnNumber);
 
-		System.out.println(p.getPlayerName() + " turn start");
+		if (verbose) System.out.println(p.getPlayerName() + " turn start");
 		printTurnProgress(p, draw, discard, null);
 
 		//GAMEPLAY
@@ -574,7 +620,7 @@ public class Simulation {
 
 				hand.setFaceUp(true);
 
-				System.out.println("Draws card");
+				if (verbose) System.out.println("Draws card");
 				printTurnProgress(p, draw, discard, hand);
 			}
 
@@ -586,7 +632,7 @@ public class Simulation {
 				//switch unknown card (or jack) with hand
 				hand = swapCardWithArrayAt(index, hand, p);
 
-				System.out.println("Swap");
+				if (verbose) System.out.println("Swap");
 			}
 			//if it's a jack, the rules are different
 			//and you have to choose
@@ -603,7 +649,7 @@ public class Simulation {
 				}
 				if (numFaceDown == 1) {
 					hand = swapCardWithArrayAt(indexFaceDown, hand, p);
-					System.out.println("Swap.");
+					if (verbose) System.out.println("Swap.");
 				}
 				//otherwise, you have to decide where to put the jack
 				else {
@@ -630,8 +676,8 @@ public class Simulation {
 					hand = swapCardWithArrayAt(index, hand, p);
 
 
-					System.out.println("Swap~");
-					System.out.println(index);
+					if (verbose) System.out.println("Swap~");
+					if (verbose) System.out.println(index);
 
 				}
 			}
@@ -642,10 +688,10 @@ public class Simulation {
 				hand = null;
 				canPlay = false;
 
-				System.out.println("Discard");
+				if (verbose) System.out.println("Discard");
 			}
 
-			//System.out.println("Action");
+			//if (verbose) System.out.println("Action");
 			printTurnProgress(p, draw, discard, hand);
 
 			//DEBUG
@@ -653,7 +699,7 @@ public class Simulation {
 
 		}//end actions
 
-		System.out.println("Turn ends");
+		if (verbose) System.out.println("Turn ends");
 
 		checkIfWinnerChanged(p, otherPlayer);
 	}
