@@ -33,7 +33,7 @@ public class Simulation {
 
 	private double[] result;
 	boolean verbose = false;
-	boolean allowOutput = true;
+	boolean allowOutput = false;
 
 
 	/*
