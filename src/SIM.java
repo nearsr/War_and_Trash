@@ -60,7 +60,7 @@ public class SIM {
 		int seed = 0;
 
 		rand = new RandomInput(filename);
-		rand.generateRandomList(seed);
+		rand.beginReadingNumbers();
 		//rand.printRandomList();
 
 		start();
@@ -85,6 +85,8 @@ public class SIM {
 		else {
 			playTrash();
 		}
+		
+		rand.endReadingNumbers();
 	}
 
 	private void getUserInput(String[] args) {
