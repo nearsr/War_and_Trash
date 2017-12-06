@@ -95,12 +95,20 @@ public class SIM {
 		double t = 1.645;
 		
 		do {
-			double x = sim.generate(isWar)[resultIndex];
+			gen = sim.generate(isWar)[resultIndex];
+			if (gen > bound) {
+				prob = 1;
+			}
+			else {
+				prob = 0;
+			}
+			
+			double x = prob;
 			n = n+1;
 			double d = x - x_bar;
 			v = v + ((n-1)/n)*Math.pow(d, 2);
 			x_bar = x_bar + d/n;
-		} while(n < 40 || (1/5) < (t/Math.sqrt(n-1)));
+		} while((n < 40) || ((1/5) < (t/Math.sqrt(n-1))));
 		double s = Math.sqrt(v/n);
 		
 		double w = s/5; //confidence interval is x_bar +- w

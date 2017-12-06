@@ -9,6 +9,10 @@ MUST be in directory with SIM in it. Run:
 GraderResults/War-and-Trash/grader.sh
 
 
+**To run simple test with repeated trace file:
+./SIM 2 <(while true ; do cat ../sim-traces-0-1/uniform-0-1-00.dat ; done)
+
+
 Git is configured to ignore all the extra stuff that this script will generate.
 If you commit and then push to git now, then it will push the PDFs of the plots to your home machine.
 This is the easiest way to see the generated plots if you are running putty.
